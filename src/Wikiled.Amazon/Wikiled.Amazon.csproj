@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net462</TargetFrameworks>
+    <Authors>Wikiled</Authors>
+    <Description>Amazon Library</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <ProjectUrl>https://github.com/AndMu/Wikiled.Amazon</ProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Wikiled.Core.Utility" Version="2.1.17" />
+    <PackageReference Include="Wikiled.Redis" Version="2.4.7" />
+  </ItemGroup>
+
+</Project>
+ 
