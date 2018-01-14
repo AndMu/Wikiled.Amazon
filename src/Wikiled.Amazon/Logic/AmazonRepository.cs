@@ -31,7 +31,7 @@ namespace Wikiled.Amazon.Logic
             manager.RegisterHashType<AmazonReviewData>().IsSingleInstance = true;
             manager.RegisterHashType<UserData>().IsSingleInstance = true;
             manager.RegisterHashType<ProductData>().IsSingleInstance = true;
-            manager.RegisterWellknown<AmazonTextData>().IsSingleInstance = true;
+            manager.RegisterNormalized<AmazonTextData>().IsSingleInstance = true;
         }
 
         public string Name => "Amazon";

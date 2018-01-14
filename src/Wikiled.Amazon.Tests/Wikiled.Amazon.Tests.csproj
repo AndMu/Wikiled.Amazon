@@ -9,7 +9,7 @@
     <PackageReference Include="NUnit.Runners" Version="3.7.0" />
     <PackageReference Include="Redis-64" Version="3.0.503" />
     <PackageReference Include="Wikiled.Core.Utility" Version="2.1.17" />
-    <PackageReference Include="Wikiled.Redis" Version="2.4.7" />
+    <PackageReference Include="Wikiled.Redis" Version="2.4.9" />
   </ItemGroup>
 
   <ItemGroup>
