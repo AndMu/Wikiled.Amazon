@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Wikiled.Core.Utility" Version="2.1.17" />
-    <PackageReference Include="Wikiled.Redis" Version="2.4.9" />
+    <PackageReference Include="Wikiled.Redis" Version="2.4.10" />
   </ItemGroup>
 
 </Project>
