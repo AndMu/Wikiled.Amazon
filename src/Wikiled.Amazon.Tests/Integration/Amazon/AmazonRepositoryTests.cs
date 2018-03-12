@@ -3,9 +3,9 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Wikiled.Amazon.Logic;
 using Wikiled.Redis.Config;
 using Wikiled.Redis.Logic;
-using Wikiled.Amazon.Logic;
 
 namespace Wikiled.Amazon.Tests.Integration.Amazon
 {
@@ -18,9 +18,12 @@ namespace Wikiled.Amazon.Tests.Integration.Amazon
 
         private AmazonReview review;
 
+        private RedisInside.Redis service;
+
         [OneTimeSetUp]
         public void Setup()
         {
+            service = new RedisInside.Redis(config => config.Port(6666));
             link = new RedisLink("Test", new RedisMultiplexer(new RedisConfiguration("localhost", 6666)));
             link.Open();
             instance = new AmazonRepository(link);
@@ -45,6 +48,7 @@ namespace Wikiled.Amazon.Tests.Integration.Amazon
         public void TearDown()
         {
             link.Close();
+            service.Dispose();
         }
 
         [Test]

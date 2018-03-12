@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using StackExchange.Redis;
-using Wikiled.Core.Utility.Arguments;
+using Wikiled.Common.Arguments;
 using Wikiled.Redis.Keys;
 using Wikiled.Redis.Logic;
 using Wikiled.Redis.Persistency;

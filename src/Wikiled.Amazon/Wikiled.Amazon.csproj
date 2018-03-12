@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net462</TargetFrameworks>
+    <TargetFramework>NETSTANDARD2.0</TargetFramework>
     <Authors>Wikiled</Authors>
     <Description>Amazon Library</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Wikiled.Core.Utility" Version="2.1.17" />
-    <PackageReference Include="Wikiled.Redis" Version="2.4.10" />
+    <PackageReference Include="Wikiled.Common" Version="1.0.11" />
+    <PackageReference Include="Wikiled.Redis" Version="3.0.14" />
   </ItemGroup>
 
 </Project>
