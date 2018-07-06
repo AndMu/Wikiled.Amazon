@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using NLog;
-using Wikiled.Common.Arguments;
 using Wikiled.Redis.Indexing;
 using Wikiled.Redis.Keys;
 using Wikiled.Redis.Logic;
@@ -26,8 +25,7 @@ namespace Wikiled.Amazon.Logic
 
         public AmazonRepository(IRedisLink manager)
         {
-            Guard.NotNull(() => manager, manager);
-            this.manager = manager;
+            this.manager = manager ?? throw new ArgumentNullException(nameof(manager));
             manager.RegisterHashType<AmazonReviewData>().IsSingleInstance = true;
             manager.RegisterHashType<UserData>().IsSingleInstance = true;
             manager.RegisterHashType<ProductData>().IsSingleInstance = true;
@@ -38,7 +36,11 @@ namespace Wikiled.Amazon.Logic
 
         public IObservable<AmazonReview> LoadProductReviews(string productId)
         {
-            Guard.NotNullOrEmpty(() => productId, productId);
+            if (string.IsNullOrEmpty(productId))
+            {
+                throw new ArgumentException("Value cannot be null or empty.", nameof(productId));
+            }
+
             logger.Debug("FindReviews :<{0}>", productId);
             return LoadReviewsByIndex(GetProductIndexKey(productId));
         }
@@ -51,14 +53,22 @@ namespace Wikiled.Amazon.Logic
 
         public IObservable<UserData> FindUsers(string productId)
         {
-            Guard.NotNullOrEmpty(() => productId, productId);
+            if (string.IsNullOrEmpty(productId))
+            {
+                throw new ArgumentException("Value cannot be null or empty.", nameof(productId));
+            }
+
             logger.Debug("FindUsers :<{0}>", productId);
             return manager.Client.GetRecords<UserData>(GetProductUserIndex(productId));
         }
 
         public async Task<AmazonReview> Load(string id)
         {
-            Guard.NotNullOrEmpty(() => id, id);
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentException("Value cannot be null or empty.", nameof(id));
+            }
+
             logger.Debug("Load:<{0}>", id);
             var key = GetAmazonKey(id);
             var result = await manager.Client.GetRecords<AmazonReviewData>(key).FirstOrDefaultAsync();
@@ -84,10 +94,13 @@ namespace Wikiled.Amazon.Logic
 
         public async Task<ProductData> LoadProduct(string id)
         {
-            Guard.NotNullOrEmpty(() => id, id);
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentException("Value cannot be null or empty.", nameof(id));
+            }
+
             logger.Debug("LoadProduct:<{0}>", id);
-            ProductData productData;
-            if (!products.TryGetValue(id, out productData))
+            if (!products.TryGetValue(id, out ProductData productData))
             {
                 var key = GetProductKey(id);
                 productData = await manager.Client.GetRecords<ProductData>(key).FirstOrDefaultAsync();
@@ -107,10 +120,13 @@ namespace Wikiled.Amazon.Logic
 
         public async Task<UserData> LoadUser(string id)
         {
-            Guard.NotNullOrEmpty(() => id, id);
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentException("Value cannot be null or empty.", nameof(id));
+            }
+
             logger.Debug("LoadUser:<{0}>", id);
-            UserData user;
-            if (!users.TryGetValue(id, out user))
+            if (!users.TryGetValue(id, out UserData user))
             {
                 var key = GetUserKey(id);
                 user = await manager.Client.GetRecords<UserData>(key).FirstOrDefaultAsync();
@@ -130,7 +146,11 @@ namespace Wikiled.Amazon.Logic
 
         public async Task Save(AmazonReview review)
         {
-            Guard.NotNull(() => review, review);
+            if (review == null)
+            {
+                throw new ArgumentNullException(nameof(review));
+            }
+
             logger.Debug("Save:<{0}>", review.Data.Id);
             lock (reviews)
             {
@@ -184,8 +204,16 @@ namespace Wikiled.Amazon.Logic
 
         private Task Save(ProductData productData, UserData user)
         {
-            Guard.NotNull(() => productData, productData);
-            Guard.NotNull(() => user, user);
+            if (productData == null)
+            {
+                throw new ArgumentNullException(nameof(productData));
+            }
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
             var productKey = GetProductKey(productData.Id);
             var userKey = GetUserKey(user.Id);
             productKey.AddIndex(GetUserProductsIndex(user.Id));

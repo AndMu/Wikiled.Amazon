@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using StackExchange.Redis;
-using Wikiled.Common.Arguments;
 using Wikiled.Redis.Keys;
 using Wikiled.Redis.Logic;
 using Wikiled.Redis.Persistency;
@@ -14,8 +14,7 @@ namespace Wikiled.Amazon.Logic
 
         public AnalysedDocRepository(IRedisLink manager)
         {
-            Guard.NotNull(() => manager, manager);
-            this.manager = manager;
+            this.manager = manager ?? throw new ArgumentNullException(nameof(manager));
             manager.RegisterHashType(new DictionarySerializer(new[] {"No"}));
         }
 

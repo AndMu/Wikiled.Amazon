@@ -1,4 +1,5 @@
-﻿using Wikiled.Common.Arguments;
+﻿
+using System;
 
 namespace Wikiled.Amazon.Logic
 {
@@ -24,17 +25,31 @@ namespace Wikiled.Amazon.Logic
             AmazonReviewData data, 
             AmazonTextData textData)
         {
-            Guard.NotNull(() => product, product);
-            Guard.NotNull(() => user, user);
-            Guard.NotNull(() => data, data);
-            Guard.NotNull(() => textData, textData);
-            Guard.NotNullOrEmpty(() => product.Id, product.Id);
-            Guard.NotNullOrEmpty(() => user.Id, user.Id);
+            if (product == null)
+            {
+                throw new ArgumentNullException(nameof(product));
+            }
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            if (string.IsNullOrEmpty(product.Id))
+            {
+                throw new ArgumentException(nameof(product.Id));
+            }
+
+            if (string.IsNullOrEmpty(user.Id))
+            {
+                throw new ArgumentException(nameof(user.Id));
+            }
+
             AmazonReview review = new AmazonReview();
-            review.Data = data;
+            review.Data = data ?? throw new ArgumentNullException(nameof(data));
             review.Product = product;
             review.User = user;
-            review.TextData = textData;
+            review.TextData = textData ?? throw new ArgumentNullException(nameof(textData));
             return review;
         }
 
