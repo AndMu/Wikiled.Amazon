@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Wikiled.Common" Version="1.1.0" />
-    <PackageReference Include="Wikiled.Redis" Version="3.1.0" />
+    <PackageReference Include="Wikiled.Common" Version="1.1.1" />
+    <PackageReference Include="Wikiled.Redis" Version="3.1.2" />
   </ItemGroup>
 
 </Project>
