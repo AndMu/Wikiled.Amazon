@@ -5,13 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NUnit" Version="3.10.1" />
-    <PackageReference Include="NUnit.Runners" Version="3.8.0" />
-    <PackageReference Include="protobuf-net" Version="2.3.17" />
+    <PackageReference Include="NUnit" Version="3.11.0" />
+    <PackageReference Include="NUnit.Runners" Version="3.9.0" />
+    <PackageReference Include="protobuf-net" Version="2.4.0" />
     <PackageReference Include="Redis-64" Version="3.0.503" />
-    <PackageReference Include="Wikiled.Common" Version="1.1.1" />
-    <PackageReference Include="Wikiled.Redis" Version="3.1.2" />
-    <PackageReference Include="Wikiled.RedisInside" Version="3.2.100.10" />
+    <PackageReference Include="Wikiled.Common" Version="1.1.5" />
+    <PackageReference Include="Wikiled.Redis" Version="3.3.0" />
+    <PackageReference Include="Wikiled.RedisInside" Version="3.2.101.11" />
   </ItemGroup>
 
   <ItemGroup>

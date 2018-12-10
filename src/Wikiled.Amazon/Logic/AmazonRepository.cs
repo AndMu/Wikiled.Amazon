@@ -3,7 +3,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using NLog;
+using Microsoft.Extensions.Logging;
+using Wikiled.Common.Logging;
 using Wikiled.Redis.Indexing;
 using Wikiled.Redis.Keys;
 using Wikiled.Redis.Logic;
@@ -13,7 +14,7 @@ namespace Wikiled.Amazon.Logic
 {
     public class AmazonRepository : IRepository
     {
-        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILogger logger = ApplicationLogging.CreateLogger< AmazonRepository>();
 
         private readonly IRedisLink manager;
 
@@ -41,7 +42,7 @@ namespace Wikiled.Amazon.Logic
                 throw new ArgumentException("Value cannot be null or empty.", nameof(productId));
             }
 
-            logger.Debug("FindReviews :<{0}>", productId);
+            logger.LogDebug("FindReviews :<{0}>", productId);
             return LoadReviewsByIndex(GetProductIndexKey(productId));
         }
         
@@ -58,7 +59,7 @@ namespace Wikiled.Amazon.Logic
                 throw new ArgumentException("Value cannot be null or empty.", nameof(productId));
             }
 
-            logger.Debug("FindUsers :<{0}>", productId);
+            logger.LogDebug("FindUsers :<{0}>", productId);
             return manager.Client.GetRecords<UserData>(GetProductUserIndex(productId));
         }
 
@@ -69,7 +70,7 @@ namespace Wikiled.Amazon.Logic
                 throw new ArgumentException("Value cannot be null or empty.", nameof(id));
             }
 
-            logger.Debug("Load:<{0}>", id);
+            logger.LogDebug("Load:<{0}>", id);
             var key = GetAmazonKey(id);
             var result = await manager.Client.GetRecords<AmazonReviewData>(key).FirstOrDefaultAsync();
             if (result?.Id != null)
@@ -99,7 +100,7 @@ namespace Wikiled.Amazon.Logic
                 throw new ArgumentException("Value cannot be null or empty.", nameof(id));
             }
 
-            logger.Debug("LoadProduct:<{0}>", id);
+            logger.LogDebug("LoadProduct:<{0}>", id);
             if (!products.TryGetValue(id, out ProductData productData))
             {
                 var key = GetProductKey(id);
@@ -125,7 +126,7 @@ namespace Wikiled.Amazon.Logic
                 throw new ArgumentException("Value cannot be null or empty.", nameof(id));
             }
 
-            logger.Debug("LoadUser:<{0}>", id);
+            logger.LogDebug("LoadUser:<{0}>", id);
             if (!users.TryGetValue(id, out UserData user))
             {
                 var key = GetUserKey(id);
@@ -151,7 +152,7 @@ namespace Wikiled.Amazon.Logic
                 throw new ArgumentNullException(nameof(review));
             }
 
-            logger.Debug("Save:<{0}>", review.Data.Id);
+            logger.LogDebug("Save:<{0}>", review.Data.Id);
             lock (reviews)
             {
                 if (reviews.ContainsKey(review.Id))
@@ -166,7 +167,7 @@ namespace Wikiled.Amazon.Logic
             var contains = await manager.Client.ContainsRecord<AmazonReviewData>(key).ConfigureAwait(false);
             if (contains)
             {
-                logger.Debug("Record already exist: {0}", review.Data.Id);
+                logger.LogDebug("Record already exist: {0}", review.Data.Id);
                 return;
             }
 
