@@ -2,10 +2,16 @@
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging.Console;
 using NUnit.Framework;
 using Wikiled.Amazon.Logic;
+using Wikiled.Common.Utilities.Modules;
 using Wikiled.Redis.Config;
 using Wikiled.Redis.Logic;
+using Wikiled.Redis.Modules;
 
 namespace Wikiled.Amazon.Tests.Integration.Amazon
 {
@@ -24,7 +30,14 @@ namespace Wikiled.Amazon.Tests.Integration.Amazon
         public void Setup()
         {
             service = new RedisInside.Redis(config => config.Port(6666));
-            link = new RedisLink("Test", new RedisMultiplexer(new RedisConfiguration("localhost", 6666)));
+
+            var collection = new ServiceCollection();
+            collection.AddLogging(builder => builder.AddConsole());
+            collection.RegisterModule(new RedisModule(new NullLogger<RedisModule>(), new RedisConfiguration("localhost", 6666)));
+            collection.RegisterModule<CommonModule>();
+            var provider = collection.BuildServiceProvider();
+
+            link = provider.GetService<IRedisLink>();
             link.Open();
             instance = new AmazonRepository(link);
             review = AmazonReview.Construct(

@@ -1,17 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFramework>NET472</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NUnit" Version="3.11.0" />
-    <PackageReference Include="NUnit.Runners" Version="3.9.0" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit.Runners" Version="3.10.0" />
     <PackageReference Include="protobuf-net" Version="2.4.0" />
     <PackageReference Include="Redis-64" Version="3.0.503" />
-    <PackageReference Include="Wikiled.Common" Version="1.1.5" />
-    <PackageReference Include="Wikiled.Redis" Version="3.3.0" />
-    <PackageReference Include="Wikiled.RedisInside" Version="3.2.101.11" />
+    <PackageReference Include="Wikiled.Common" Version="1.1.9" />
+    <PackageReference Include="Wikiled.Redis" Version="3.5.32" />
+    <PackageReference Include="Wikiled.RedisInside" Version="3.2.101.34" />
+    <PackageReference Include="System.Memory" Version="4.5.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,4 +23,11 @@
   <ItemGroup>
     <Reference Include="System.Configuration" />
   </ItemGroup>
+
+
+  <Target Name="ForceGenerationOfBindingRedirects" AfterTargets="ResolveAssemblyReferences" BeforeTargets="GenerateBindingRedirects" Condition="'$(AutoGenerateBindingRedirects)' == 'true'">
+    <PropertyGroup>
+      <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    </PropertyGroup>
+  </Target>
 </Project>

@@ -200,7 +200,9 @@ namespace Wikiled.Amazon.Logic
         public Task<long> CountReviews(ProductCategory category)
         {
             var index = GetProductTypeIndex(category);
-            return new IndexManagerFactory(manager, manager.Database).Create(new IndexKey(this, index, false)).Count();
+            return new IndexManagerFactory(manager)
+                   .Create(manager.Database, new IndexKey(this, index, false))
+                   .Count();
         }
 
         private Task Save(ProductData productData, UserData user)
