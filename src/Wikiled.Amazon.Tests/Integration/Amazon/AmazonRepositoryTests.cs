@@ -39,7 +39,7 @@ namespace Wikiled.Amazon.Tests.Integration.Amazon
 
             link = provider.GetService<IRedisLink>();
             link.Open();
-            instance = new AmazonRepository(link);
+            instance = new AmazonRepository(new NullLogger<AmazonRepository>(),  link);
             review = AmazonReview.Construct(
                 new ProductData { Id = "Product1" },
                 new UserData { Id = "User1" },

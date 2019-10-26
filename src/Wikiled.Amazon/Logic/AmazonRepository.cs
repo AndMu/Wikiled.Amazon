@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Wikiled.Common.Logging;
-using Wikiled.Redis.Indexing;
 using Wikiled.Redis.Keys;
 using Wikiled.Redis.Logic;
 using Wikiled.Redis.Persistency;
@@ -14,7 +12,7 @@ namespace Wikiled.Amazon.Logic
 {
     public class AmazonRepository : IRepository
     {
-        private static readonly ILogger logger = ApplicationLogging.CreateLogger< AmazonRepository>();
+        private readonly ILogger<AmazonRepository> logger;
 
         private readonly IRedisLink manager;
 
@@ -24,9 +22,10 @@ namespace Wikiled.Amazon.Logic
 
         private readonly ConcurrentDictionary<string, UserData> users = new ConcurrentDictionary<string, UserData>();
 
-        public AmazonRepository(IRedisLink manager)
+        public AmazonRepository(ILogger<AmazonRepository> logger, IRedisLink manager)
         {
             this.manager = manager ?? throw new ArgumentNullException(nameof(manager));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             manager.RegisterHashType<AmazonReviewData>().IsSingleInstance = true;
             manager.RegisterHashType<UserData>().IsSingleInstance = true;
             manager.RegisterHashType<ProductData>().IsSingleInstance = true;
@@ -200,9 +199,7 @@ namespace Wikiled.Amazon.Logic
         public Task<long> CountReviews(ProductCategory category)
         {
             var index = GetProductTypeIndex(category);
-            return new IndexManagerFactory(manager)
-                   .Create(manager.Database, new IndexKey(this, index, false))
-                   .Count();
+            return manager.Client.Count(new IndexKey(this, index, false));
         }
 
         private Task Save(ProductData productData, UserData user)
