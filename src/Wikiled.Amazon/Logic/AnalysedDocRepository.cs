@@ -15,14 +15,14 @@ namespace Wikiled.Amazon.Logic
         public AnalysedDocRepository(IRedisLink manager)
         {
             this.manager = manager ?? throw new ArgumentNullException(nameof(manager));
-            manager.RegisterHashType(new DictionarySerializer(new[] {"No"}));
+            manager.PersistencyRegistration.RegisterHashsetSingle(new DictionarySerializer(new[] { "No" }));
         }
 
         public string Name => "Analysed";
 
         public void Save(AmazonReview amazon, Dictionary<string, RedisValue> review)
         {
-            Dictionary<string, string> value = new Dictionary<string, string>();
+            var value = new Dictionary<string, string>();
             foreach (var redisValue in review)
             {
                 value[redisValue.Key] = redisValue.Value.ToString();

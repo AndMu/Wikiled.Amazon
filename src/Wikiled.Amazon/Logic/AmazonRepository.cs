@@ -26,10 +26,10 @@ namespace Wikiled.Amazon.Logic
         {
             this.manager = manager ?? throw new ArgumentNullException(nameof(manager));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            manager.RegisterHashType<AmazonReviewData>().IsSingleInstance = true;
-            manager.RegisterHashType<UserData>().IsSingleInstance = true;
-            manager.RegisterHashType<ProductData>().IsSingleInstance = true;
-            manager.RegisterNormalized<AmazonTextData>().IsSingleInstance = true;
+            manager.PersistencyRegistration.RegisterHashsetSingle<AmazonReviewData>();
+            manager.PersistencyRegistration.RegisterHashsetSingle<UserData>();
+            manager.PersistencyRegistration.RegisterHashsetSingle<ProductData>();
+            manager.PersistencyRegistration.RegisterHashsetSingle<AmazonTextData>();
         }
 
         public string Name => "Amazon";

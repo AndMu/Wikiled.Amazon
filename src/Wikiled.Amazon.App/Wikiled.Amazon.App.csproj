@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Wikiled.Common" Version="1.1.9" />
+    <PackageReference Include="Wikiled.Common" Version="1.1.10" />
     <PackageReference Include="System.Memory" Version="4.5.3" />
   </ItemGroup>
 
