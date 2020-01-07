@@ -32,7 +32,7 @@ namespace Wikiled.Amazon.Logic
             manager.PersistencyRegistration.RegisterHashsetSingle<UserData>();
             manager.PersistencyRegistration.RegisterHashsetSingle<ProductData>();
             // not sure why it was added originally as object but now we have to stick due to compatibility issue
-            manager.PersistencyRegistration.RegisterObjectHashSingle<AmazonTextData>(new FlatProtoDataSerializer(false, MemoryStreamInstances.MemoryStream));
+            manager.PersistencyRegistration.RegisterObjectHashSingle<AmazonTextData>(new FlatProtoDataSerializer(true, MemoryStreamInstances.MemoryStream), true);
         }
 
         public string Name => "Amazon";
