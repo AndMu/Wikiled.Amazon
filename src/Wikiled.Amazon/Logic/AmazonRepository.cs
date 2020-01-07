@@ -4,6 +4,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using Wikiled.Common.Utilities.Helpers;
+using Wikiled.Redis.Data;
 using Wikiled.Redis.Keys;
 using Wikiled.Redis.Logic;
 using Wikiled.Redis.Persistency;
@@ -29,7 +31,8 @@ namespace Wikiled.Amazon.Logic
             manager.PersistencyRegistration.RegisterHashsetSingle<AmazonReviewData>();
             manager.PersistencyRegistration.RegisterHashsetSingle<UserData>();
             manager.PersistencyRegistration.RegisterHashsetSingle<ProductData>();
-            manager.PersistencyRegistration.RegisterHashsetSingle<AmazonTextData>();
+            // not sure why it was added originally as object but now we have to stick due to compatibility issue
+            manager.PersistencyRegistration.RegisterObjectHashSingle<AmazonTextData>(new FlatProtoDataSerializer(false, MemoryStreamInstances.MemoryStream));
         }
 
         public string Name => "Amazon";
